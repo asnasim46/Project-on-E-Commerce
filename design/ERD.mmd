@@ -1,0 +1,375 @@
+%% Mermaid ERD for Project-on-E-Commerce
+%% Open this file in VS Code with the "Markdown Preview Mermaid Support" extension
+erDiagram
+    COMPANY {
+        number company_id PK
+        Varchar2 company_name
+        varchar2 company_proparitor
+        varchar2 phone
+        varchar2 email
+        varchar2 address
+        varchar2 website
+        varchar2 contact_person
+        varchar2 contact_person_designation
+        varchar2 contact_person_phone
+        varchar2 tag_line
+        varchar2 mission_vision
+    }
+
+    PARTS_CATEGORY {
+        number parts_category_id PK
+        varchar2 name
+        varchar2 description
+        datetime created_at
+        number created_by
+    }
+
+    BRANDS {
+        number brand_id PK
+        varchar2 name
+        varchar2 size
+        varchar2 description
+        datetime created_at
+        number created_by
+    }
+
+    PARTS {
+        number part_id PK
+        number parts_category_id FK
+        number brand_id FK
+        varchar2 name
+        varchar2 description
+        numeric unit_cost
+        numeric unit_price
+        datetime created_at
+        number created_by
+    }
+
+    DEPARTMENTS {
+        number department_id PK
+        number manager_id FK
+        varchar2 name
+        varchar2 description
+        datetime created_at
+        number created_by
+    }
+
+    EMPLOYEES {
+        number employee_id PK
+        number company_id FK
+        number user_id FK
+        number department_id FK
+        varchar2 first_name
+        varchar2 last_name
+        varchar2 email
+        varchar2 phone
+        date hire_date
+        varchar2 job_title
+        numeric salary
+        blob employee_photo
+        datetime created_at
+        number created_by
+    }
+
+    USERS {
+        number user_id PK
+        number department_id FK
+        number employee_id FK
+        varchar2 username
+        varchar2 email
+        varchar2 password_hash
+        varchar2 first_name
+        varchar2 last_name
+        varchar2 phone
+        boolean is_active
+        datetime last_login_at
+        datetime created_at
+        number created_by
+    }
+
+    CUSTOMERS {
+        number customer_id PK
+        varchar2 name
+        varchar2 contact_name
+        varchar2 email
+        varchar2 phone
+        varchar2 address
+        numeric rewards
+        numeric credit_limit
+        datetime created_at
+        number created_by
+    }
+
+    SUPPLIERS {
+        number supplier_id PK
+        varchar2 name
+        varchar2 email
+        varchar2 phone
+        varchar2 address
+        varchar2 contact_person
+        varchar2 cp_phone
+        numeric pur_total
+        numeric pay_total
+        numeric due
+        datetime created_at
+        number created_by
+    }
+
+    PRODUCT_CATEGORY {
+        number product_category_id PK
+        varchar2 name
+        varchar2 code
+        varchar2 description
+        datetime created_at
+        number created_by
+    }
+
+    SUBCATEGORIES {
+        number subcategory_id PK
+        number product_category_id FK
+        varchar2 name
+        varchar2 description
+        datetime created_at
+        number created_by
+    }
+
+    PRODUCTS {
+        number product_id PK
+        number product_category_id FK
+        varchar2 name
+        varchar2 description
+        number supplier_id FK
+        number subcategory_id FK
+        number brand_id FK
+        varchar2 unit_of_measure
+        numeric mrp
+        numeric purchase_price
+        datetime created_at
+        number created_by
+    }
+
+    STOCK {
+        number stock_id PK
+        number supplier_id FK
+        number category_id FK
+        number sub_cat_id FK
+        number product_id FK
+        numeric quantity
+        datetime last_update_at
+        number created_by
+    }
+
+    SALES_MASTER {
+        number sales_id PK
+        number company_id FK
+        number customer_id FK
+        varchar2 sales_number
+        date sales_date
+        varchar2 status
+        numeric subtotal
+        numeric discount_amount
+        numeric shipping_amount
+        numeric total_amount
+        numeric adjusted_amount
+        varchar2 adjust_reference
+        datetime created_at
+        number created_by
+    }
+
+    SALES_DETAILS {
+        number sales_detail_id PK
+        number sales_id FK
+        number product_id FK
+        varchar2 description
+        numeric quantity
+        numeric unit_price
+        numeric discount
+        numeric tax_rate
+        datetime created_at
+        number created_by
+    }
+
+    SALES_RETURN_MASTER {
+        number sales_return_id PK
+        number sales_id FK
+        number company_id FK
+        varchar2 return_number
+        date return_date
+        varchar2 reason
+        numeric tax_amount
+        numeric total_amount
+        datetime created_at
+        number created_by
+    }
+
+    SALES_RETURN_DETAILS {
+        number sales_return_detail_id PK
+        number sales_return_id FK
+        number product_id FK
+        numeric quantity
+        numeric unit_price
+        varchar2 condition
+        datetime created_at
+        number created_by
+    }
+
+    PRODUCT_ORDER_MASTER {
+        number po_ord_mas_id PK
+        number company_id FK
+        number supplier_id FK
+        varchar2 po_number
+        date order_date
+        date expected_date
+        varchar2 status
+        numeric subtotal
+        numeric discount_amount
+        numeric tax_amount
+        numeric shipping_amount
+        numeric total_amount
+        varchar2 currency
+        varchar2 payment_terms
+        datetime created_at
+        number created_by
+    }
+
+    PRODUCT_ORDER_DETAILS {
+        number po_ord_detail_id PK
+        number po_ord_mas_id FK
+        number product_id FK
+        varchar2 description
+        numeric quantity_ordered
+        numeric unit_cost
+        numeric discount
+        numeric tax_rate
+        datetime created_at
+        number created_by
+    }
+
+    PRODUCT_RECEIVE_MASTER {
+        number receive_id PK
+        number po_ord_id FK
+        date receive_date
+        varchar2 status
+        varchar2 notes
+        datetime created_at
+        number created_by
+    }
+
+    PRODUCT_RECEIVE_DETAILS {
+        number receive_detail_id PK
+        number receive_id FK
+        number product_id FK
+        numeric quantity_received
+        varchar2 condition
+        datetime created_at
+        number created_by
+    }
+
+    DAMAGE {
+        number damage_id PK
+        date damage_date
+        number reported_by FK
+        numeric total_amount
+        varchar2 notes
+        datetime created_at
+        number created_by
+    }
+
+    DAMAGE_DETAILS {
+        number damage_detail_id PK
+        number damage_id FK
+        number product_id FK
+        numeric damage
+        numeric quantity
+        numeric unit_price
+        varchar2 reason
+        datetime created_at
+        number created_by
+    }
+
+    PAYMENT {
+        number payment_id PK
+        number sales_id FK
+        number customer_id FK
+        date payment_date
+        varchar2 method
+        varchar2 reference
+        numeric amount
+        varchar2 status
+        datetime created_at
+        number created_by
+    }
+
+    SERVICE_MASTER {
+        number service_id PK
+        date service_date
+        varchar2 name
+        varchar2 description
+        number customer_id FK
+        number invoice_id FK
+        boolean warranty
+        varchar2 service_by
+        numeric service_charge
+        numeric parts_price
+        numeric total_price
+        datetime created_at
+        number created_by
+    }
+
+    SERVICE_DETAILS {
+        number service_detail_id PK
+        number service_id FK
+        number employee_id FK
+        datetime performed_at
+        numeric hours
+        varchar2 notes
+        datetime created_at
+        number created_by
+    }
+
+    SERVICE_LIST {
+        number service_list_id PK
+        number service_id FK
+        number product_id FK
+        number part_id FK
+        numeric quantity
+        numeric unit_price
+        numeric line_total
+        datetime created_at
+        number created_by
+    }
+
+    %% Relationships (one-to-many shown from parent to child)
+    COMPANY ||--o{ EMPLOYEES : employs
+    COMPANY ||--o{ SALES_MASTER : "has sales"
+    COMPANY ||--o{ PRODUCT_ORDER_MASTER : "places PO"
+    COMPANY ||--o{ SALES_RETURN_MASTER : "receives returns"
+
+    DEPARTMENTS ||--o{ EMPLOYEES : "has"
+    EMPLOYEES ||--o{ SERVICE_DETAILS : "performs"
+    EMPLOYEES ||--o{ DEPARTMENTS : "manages"
+
+    PARTS_CATEGORY ||--o{ PARTS : "contains"
+    BRANDS ||--o{ PARTS : "brands"
+    BRANDS ||--o{ PRODUCTS : "brands"
+
+    SUPPLIERS ||--o{ PRODUCTS : "supplies"
+    PRODUCT_CATEGORY ||--o{ SUBCATEGORIES : "has"
+    SUBCATEGORIES ||--o{ PRODUCTS : "has"
+    PRODUCTS ||--o{ STOCK : "stocked in"
+    PRODUCTS ||--o{ SALES_DETAILS : "sold in"
+
+    SALES_MASTER ||--o{ SALES_DETAILS : "includes"
+    SALES_MASTER ||--o{ PAYMENT : "paid by"
+    SALES_MASTER ||--o{ SALES_RETURN_MASTER : "may have"
+    SALES_RETURN_MASTER ||--o{ SALES_RETURN_DETAILS : "contains"
+
+    PRODUCT_ORDER_MASTER ||--o{ PRODUCT_ORDER_DETAILS : "contains"
+    PRODUCT_ORDER_MASTER ||--o{ PRODUCT_RECEIVE_MASTER : "receives"
+    PRODUCT_RECEIVE_MASTER ||--o{ PRODUCT_RECEIVE_DETAILS : "contains"
+
+    DAMAGE ||--o{ DAMAGE_DETAILS : "records"
+    PRODUCT_RETURN_MASTER ||--o{ PRODUCT_RETURN_DETAILS : "contains"
+
+    SERVICE_MASTER ||--o{ SERVICE_DETAILS : "has"
+    SERVICE_MASTER ||--o{ SERVICE_LIST : "lists"
